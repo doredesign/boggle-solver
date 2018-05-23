@@ -44,18 +44,19 @@ class Solver
 
   def word_beginning?(string)
     result = false
+    string_to_match_against = string.gsub(/q/,"qu")
     prefix = string[0, string.length - 1]
     @dictionaries[prefix].each do |word|
-      if word =~ /\A#{string}/
+      if word =~ /\A#{string_to_match_against}/
         result = true
         @dictionaries[string] ||= []
         @dictionaries[string] << word
       end
 
-      if word == string
-        unless @solutions.include?(string)
-          @solutions << string
-          puts string
+      if word == string_to_match_against
+        unless @solutions.include?(string_to_match_against) || word.length <= 2
+          @solutions << string_to_match_against
+          puts string_to_match_against
         end
 
         break
@@ -65,7 +66,7 @@ class Solver
     result
   rescue => e
     puts "string: #{string}"
-    raise e
+    raise
   end
 
   def solutions
