@@ -13,11 +13,32 @@ class Solver
   end
 
   def print_formatted_board
-    puts "*******"
+    widths = {}
     @board.each do |line|
-      puts line.upcase.split("").join(" ")
+      line.split("").each_with_index do |char, index|
+        if char == "q"
+          widths[index] = 2
+        else
+          widths[index] ||= 1
+        end
+      end
     end
-    puts "*******"
+
+    total_witdth = widths.values.sum + 3 # 3 spaces
+    line_break = "*" * total_witdth
+
+    puts line_break
+
+    @board.each do |line|
+      line.upcase.split("").each_with_index do |char, index|
+        spacer = char == "Q" ? "u" : " "
+        char = char.ljust(widths[index], spacer)
+        print "#{char} "
+      end
+      puts
+    end
+
+    puts line_break
   end
 
   def neighbor_cells(input_y, input_x)
